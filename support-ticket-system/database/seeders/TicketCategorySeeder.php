@@ -13,7 +13,7 @@ class TicketCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('category_ticket')->insert([
+        DB::table('ticket_category')->insert([
             [
                 'category_id' => 1,
                 'ticket_id' => 1,

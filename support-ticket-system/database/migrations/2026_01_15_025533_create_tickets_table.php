@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-
+            $table->json('attachment')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('assigned_to_user_id')
+                  ->nullable()          
+                  ->constrained('users') 
+                  ->nullOnDelete();
             $table->enum('status', ['open', 'in_progress', 'closed'])->default('open');
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->timestamps();

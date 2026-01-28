@@ -65,7 +65,7 @@ class AuthService{
             false, // secure https 
             true, // httpOnly
             false, // raw
-            'Lax' // sameSite
+            'lax' // sameSite
         );
     }
 }
