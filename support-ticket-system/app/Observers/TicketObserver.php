@@ -55,13 +55,8 @@ class TicketObserver
      */
     public function deleted(Ticket $ticket): void
     {
-        $data = [
-            'ticket_id' => $ticket->id,
-            'user_id' => auth()->id(),
-            'action' => 'deleted',
-            'changed_fields' => null,
-        ];
-        $this->ticketLogService->createTicketLog($data);
+        // Do not log deletion - ticket will be deleted with cascade
+        // Logging here causes foreign key constraint violation
     }
 
     /**
