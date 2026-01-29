@@ -79,4 +79,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->role && $this->role->name === $roleName;
     }
+
+    public function scopeFilter($query, $filters){
+        if (!empty($filters['role'])) {
+            $query->where('role_id', $filters['role']);
+        }
+        return $query;
+    }
 }

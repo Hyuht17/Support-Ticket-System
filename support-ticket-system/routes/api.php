@@ -5,6 +5,9 @@ use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketLogController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfilePasswordController;
+use App\Http\Controllers\UserPasswordController;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -24,9 +27,23 @@ Route::middleware('auth:api')->prefix('tickets')->group(function () {
     Route::patch('{id}', [TicketController::class, 'update']);
     Route::delete('{id}', [TicketController::class, 'destroy']);
     Route::get('/', [TicketController::class, 'index']);
-    Route::get('/{id}/logs', [TicketLogController::class, 'index']);
+    Route::get('/{id}/logs', [TicketLogController::class, 'show']);
     Route::get('/{id}/comments', [CommentController::class, 'index']);
     Route::post('/{id}/comments', [CommentController::class, 'store']);
     Route::patch('/{ticketId}/comments/{commentId}', [CommentController::class, 'update']);
     Route::delete('/{ticketId}/comments/{commentId}', [CommentController::class, 'destroy']);
 });
+
+Route::middleware('auth:api')->prefix('users')->group(function () {
+    Route::put('profile/password', [ProfilePasswordController::class, 'update']);
+    Route::patch('{id}', [UserController::class, 'update']);
+    Route::get('/agents', [UserController::class, 'getAgents']);
+
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('{id}', [UserController::class, 'show']);
+        Route::put('{id}/password', [UserPasswordController::class, 'update']);
+    });
+});
+
+
