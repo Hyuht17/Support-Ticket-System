@@ -28,4 +28,16 @@ class UserRepository{
                     ->latest()
                     ->paginate($perPage);
     }
+
+    public function searchAgents($keyword){
+        return User::query()
+                ->where('role_id', 2)
+                ->where(function($query) use ($keyword){
+                    $query->where('name', 'like', "%$keyword%")
+                          ->orWhere('email', 'like', "%$keyword%");
+                })
+                ->select('id', 'name', 'email')
+                ->limit(10)
+                ->get();
+    }
 }

@@ -52,4 +52,8 @@ class UserService
     public function getAllUsers($filter = [], $perPage = 15){
         return $this->userRepository->all($filter, $perPage);
     }
+
+    public function searchAgents($keyword){
+        return $this->userRepository->searchAgents($keyword);
+    }
 }

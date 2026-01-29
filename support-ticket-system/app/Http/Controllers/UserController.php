@@ -46,4 +46,14 @@ class UserController extends Controller
             'data' => $updatedUser,
         ]);
     }
+
+    public function getAgents(Request $request)
+    {
+        $this->authorize('viewAny', User::class);
+        $agents = $this->userService->searchAgents($request->keyword);
+        return response()->json([
+            'success' => true,
+            'data' => $agents,
+        ]);
+    }
 }
