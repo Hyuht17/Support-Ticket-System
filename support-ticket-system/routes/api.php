@@ -37,14 +37,16 @@ Route::middleware('auth:api')->prefix('tickets')->group(function () {
 Route::middleware('auth:api')->prefix('users')->group(function () {
     Route::put('profile/password', [ProfilePasswordController::class, 'update']);
     Route::patch('{id}', [UserController::class, 'update']);
-    Route::get('/agents', [UserController::class, 'getAgents']);
-    Route::get('/agents', [UserController::class, 'getAgents']);
 
     Route::middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('{id}', [UserController::class, 'show']);
-        Route::put('{id}/password', [UserPasswordController::class, 'update']);
+        Route::put('{id}/password', [UserPasswordController::class, 'update']);            Route::get('/agents', [UserController::class, 'getAgents']);
+        Route::get('/agents', [UserController::class, 'getAgents']);
     });
 });
 
+Route::middleware('role:admin')->prefix('ticket-logs')->group(function () {
+    Route::get('/', [TicketLogController::class, 'index']);
+});
 
