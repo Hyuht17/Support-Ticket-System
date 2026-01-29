@@ -21,7 +21,7 @@ class UpdateTicketRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'string|max:255',
             'description' => 'string',
             'priority' => 'string|in:low,medium,high',
@@ -35,5 +35,10 @@ class UpdateTicketRequest extends FormRequest
             'status'=>'string|in:open,in_progress,closed',
             //
         ];
+        
+        if ($this->user()->role_id === 1) {
+            $rules['assigned_to_user_id'] = ['nullable', 'exists:users,id'];
+        }
+        return $rules;
     }
 }
