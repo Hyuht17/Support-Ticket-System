@@ -38,6 +38,7 @@ Route::middleware('auth:api')->prefix('users')->group(function () {
     Route::put('profile/password', [ProfilePasswordController::class, 'update']);
     Route::patch('{id}', [UserController::class, 'update']);
     Route::get('/agents', [UserController::class, 'getAgents']);
+    Route::get('/agents', [UserController::class, 'getAgents']);
 
     Route::middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);

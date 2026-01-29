@@ -52,7 +52,8 @@ class Ticket extends Model
         return $query->with([
             'categories:id,name', 
             'labels:id,name', 
-            'user:id,name'
+            'user:id,name',
+            'assignedTo:id,name',
         ]);
     }
 
