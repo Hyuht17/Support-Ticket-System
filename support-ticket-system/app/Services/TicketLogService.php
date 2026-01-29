@@ -20,4 +20,8 @@ class TicketLogService
     public function getLogsByTicketId($ticketId){
         return $this->ticketLogRepository->findbyTicketId($ticketId);
     }
+
+    public function getAllLogs($filters, $perPage){
+        return $this->ticketLogRepository->all($filters, $perPage);
+    }
 }
