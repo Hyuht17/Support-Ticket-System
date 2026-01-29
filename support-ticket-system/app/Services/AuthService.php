@@ -3,16 +3,16 @@
 namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use \App\Repositories\UserRepository;
+use \App\Services\UserService;
 use Exception;
 
 class AuthService{
 
-    protected $userRepository;
+    protected $userService;
     protected $authGuard;
 
-    public function __construct(UserRepository $userRepository){
-        $this->userRepository = $userRepository;
+    public function __construct(UserService $userService){
+        $this->userService = $userService;
         $this->authGuard = Auth::guard();
         
     }
@@ -48,7 +48,7 @@ class AuthService{
 
     public function register($data){
         $data['password'] = bcrypt($data['password']);
-        $user = $this->userRepository->create($data);
+        $user = $this->userService->createUser($data);
         return $user;
     }
 
