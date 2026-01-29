@@ -8,6 +8,7 @@ use App\Http\Controllers\TicketLogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilePasswordController;
 use App\Http\Controllers\UserPasswordController;
+use App\Http\Controllers\CategoryController;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -15,7 +16,7 @@ Route::prefix('auth')->group(function () {
     
     Route::middleware('auth:api')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
-        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::get('refresh', [AuthController::class, 'refresh']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
 });
@@ -48,5 +49,14 @@ Route::middleware('auth:api')->prefix('users')->group(function () {
 
 Route::middleware('role:admin')->prefix('ticket-logs')->group(function () {
     Route::get('/', [TicketLogController::class, 'index']);
+});
+
+Route::middleware('auth:api')->prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::middleware('role:admin')->group(function () {
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::patch('{id}', [CategoryController::class, 'update']);
+        Route::delete('{id}', [CategoryController::class, 'destroy']);
+    });
 });
 
