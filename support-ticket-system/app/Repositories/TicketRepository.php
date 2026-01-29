@@ -42,5 +42,15 @@ class TicketRepository{
 
         return $query;
     }
+
+    public function countTickets(){
+        $data = [
+            'total' => Ticket::count(),
+            'open' => Ticket::where('status', 'open')->count(),
+            'closed' => Ticket::where('status', 'closed')->count(),
+            'in_progress' => Ticket::where('status', 'in_progress')->count(),
+        ];  
+        return $data;
+    }
 }
 

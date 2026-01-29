@@ -108,5 +108,9 @@ class TicketService{
         }
         return $this->ticketRepository->getTicketsByUserId($user->id, $filters, $perPage);
     }
+
+    public function countTickets(){
+        return $this->ticketRepository->countTickets();
+    }
 }
 
