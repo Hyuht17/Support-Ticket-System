@@ -6,13 +6,16 @@ use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Services\NotificationService;
 
 class UserService
 {
     protected $userRepository;
+    protected $notificationService;
 
-    public function __construct(UserRepository $userRepository, Hash $hash){
+    public function __construct(UserRepository $userRepository, Hash $hash, NotificationService $notificationService){
         $this->userRepository = $userRepository;
+        $this->notificationService = $notificationService;
     }
 
 
@@ -46,6 +49,7 @@ class UserService
         $user = $this->getUserById($id);
         $user->password = bcrypt($newPassword);
         $user->save();
+        $this->notificationService->sendUserPasswordResetNotification($user, $newPassword);
         return $newPassword;
     }
 
