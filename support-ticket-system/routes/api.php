@@ -9,11 +9,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilePasswordController;
 use App\Http\Controllers\UserPasswordController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LabelController;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
-    
     Route::middleware('auth:api')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
         Route::get('refresh', [AuthController::class, 'refresh']);
@@ -38,7 +38,6 @@ Route::middleware('auth:api')->prefix('tickets')->group(function () {
 Route::middleware('auth:api')->prefix('users')->group(function () {
     Route::put('profile/password', [ProfilePasswordController::class, 'update']);
     Route::patch('{id}', [UserController::class, 'update']);
-
     Route::middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('{id}', [UserController::class, 'show']);
@@ -60,3 +59,12 @@ Route::middleware('auth:api')->prefix('categories')->group(function () {
     });
 });
 
+Route::middleware('auth:api')->prefix('labels')->group(function () {
+    Route::get('/', [LabelController::class, 'index']);
+    Route::middleware('role:admin')->group(function () {
+        Route::post('/', [LabelController::class, 'store']);
+        Route::patch('{id}', [LabelController::class, 'update']);
+        Route::delete('{id}', [LabelController::class, 'destroy']);
+    });
+});
+    
