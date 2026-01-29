@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfilePasswordController;
 use App\Http\Controllers\UserPasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\DashboardController;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -24,6 +25,7 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:api')->prefix('tickets')->group(function () {
     
     Route::post('/', [TicketController::class, 'store']);
+    Route::get('/stats', [DashboardController::class, 'index']);
     Route::get('{id}', [TicketController::class, 'show']);
     Route::patch('{id}', [TicketController::class, 'update']);
     Route::delete('{id}', [TicketController::class, 'destroy']);
