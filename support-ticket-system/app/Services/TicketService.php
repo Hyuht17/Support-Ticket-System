@@ -5,17 +5,21 @@ namespace App\Services;
 use App\Model\Ticket;
 use App\Repositories\TicketRepository;
 use Illuminate\Support\Arr;
+use App\Services\FileUploadService;
+use App\Services\NotificationService;
 
 class TicketService{
 
     protected $ticketRepository;
     protected $fileUploadService;
     protected $arr;
+    protected $notificationService;
 
-    public function __construct(TicketRepository $ticketRepository, FileUploadService $fileUploadService){
+    public function __construct(TicketRepository $ticketRepository, FileUploadService $fileUploadService, NotificationService $notificationService){
         $this->ticketRepository = $ticketRepository;
         $this->fileUploadService = $fileUploadService;
         $this->arr = new Arr();
+        $this->notificationService = $notificationService;
     }
 
 
@@ -39,6 +43,9 @@ class TicketService{
         if (!empty($data['labels'])) {
             $ticket->labels()->attach($data['labels']);
         }
+
+        $this->notificationService->sendNewTicketNotification($ticket);
+
         return $ticket;
     }
 

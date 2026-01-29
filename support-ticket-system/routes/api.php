@@ -25,7 +25,7 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:api')->prefix('tickets')->group(function () {
     
     Route::post('/', [TicketController::class, 'store']);
-    Route::get('/stats', [DashboardController::class, 'index']);
+    Route::middleware('role:admin')->get('/stats', [DashboardController::class, 'index']);
     Route::get('{id}', [TicketController::class, 'show']);
     Route::patch('{id}', [TicketController::class, 'update']);
     Route::delete('{id}', [TicketController::class, 'destroy']);

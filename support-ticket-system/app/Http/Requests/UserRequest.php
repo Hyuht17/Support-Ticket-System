@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
         ];
 
         if ($this->user()->role_id === 1) {
-            $rules['role_id'] = ['required', Rule::in([1, 2, 3])];
+            $rules['role_id'] = ['nullable', Rule::in([1, 2, 3])];
         } 
 
         return $rules;
