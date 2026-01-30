@@ -56,6 +56,7 @@ class TicketService{
     public function updateTicket($ticket, $data){
 
         $ticketData = $this->arr->except($data, ['categories', 'labels', 'attachments', 'keep_attachments']);
+        $hasFileChanges = false;
 
         if (isset($data['attachments']) || isset($data['keep_attachments'])) {
             $existingFiles = [];
@@ -75,6 +76,7 @@ class TicketService{
                         $filePath = is_array($file) ? ($file['path'] ?? '') : $file;
                         if ($filePath && !in_array($filePath, $keepPaths)) {
                             $this->fileUploadService->delete($filePath);
+                            $hasFileChanges = true;
                         }
                     }
                 }
@@ -83,9 +85,12 @@ class TicketService{
             if (isset($data['attachments']) && is_array($data['attachments'])) {
                 $newFiles = $this->fileUploadService->uploadMultiple($data['attachments'], 'tickets');
                 $existingFiles = array_merge($existingFiles, $newFiles);
+                $hasFileChanges = true;
             }
             
-            $ticketData['attachment'] = !empty($existingFiles) ? $existingFiles : null;
+            if ($hasFileChanges) {
+                $ticketData['attachment'] = !empty($existingFiles) ? $existingFiles : null;
+            }
         }
 
         $ticketNew = $this->ticketRepository->update($ticket, $ticketData);
