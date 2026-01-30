@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
 import { TicketIcon, SpinnerIcon } from '../assets/icons';
 
 const Dashboard = () => {
-  const { stats, loading } = useDashboard();
+  const { stats, loading, refreshStats } = useDashboard();
+
+  useEffect(() => {
+    refreshStats(); 
+  }, []);
 
   if (loading) {
     return (

@@ -13,8 +13,8 @@ const TicketDetail = () => {
   const { id } = useParams();
   const { currentTicket, loading, fetchTicket, updateTicket } = useTickets();
   const { comments, fetchComments, createComment, updateComment, deleteComment } = useComments();
-  const { categories } = useCategories();
-  const { labels } = useLabels();
+  const { categories, fetchCategories } = useCategories();
+  const { labels, fetchLabels } = useLabels();
 
   const [isEditing, setIsEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -45,6 +45,8 @@ const TicketDetail = () => {
   ];
 
   useEffect(() => {
+    fetchCategories(); 
+    fetchLabels(); 
     fetchTicket(id);
 
     const loadComments = async () => {
