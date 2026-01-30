@@ -9,7 +9,7 @@ import { useCategories } from '../contexts/CategoryContext';
 const Tickets = () => {
   const navigate = useNavigate();
   const { tickets, loading, pagination, fetchTickets, deleteTicket } = useTickets();
-  const { categories } = useCategories();
+  const { categories, fetchCategories } = useCategories();
   const [filters, setFilters] = useState({
     status: '',
     priority: '',
@@ -19,6 +19,7 @@ const Tickets = () => {
   });
 
   useEffect(() => {
+    fetchCategories(); 
     fetchTickets(filters);
   }, [filters]);
 

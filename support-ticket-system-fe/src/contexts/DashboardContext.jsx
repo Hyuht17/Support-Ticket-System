@@ -19,12 +19,18 @@ export const DashboardProvider = ({ children }) => {
     closed: 0,
   });
   const [loading, setLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const fetchDashboardStats = async () => {
+  const fetchDashboardStats = async (force = false) => {
+    if (isInitialized && !force) {
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await ticketService.getTicketStats();
       setStats(response.data);
+      setIsInitialized(true);
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
     } finally {
@@ -32,13 +38,12 @@ export const DashboardProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchDashboardStats();
-  }, []);
+
 
   const value = {
     stats,
     loading,
+    isInitialized,
     refreshStats: fetchDashboardStats,
   };
 

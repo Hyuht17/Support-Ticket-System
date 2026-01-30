@@ -15,13 +15,19 @@ export const CategoryProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (force = false) => {
+    if (isInitialized && !force) {
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const response = await categoryService.getCategories();
       setCategories(response.data || []);
+      setIsInitialized(true);
     } catch (err) {
       console.error('Failed to fetch categories:', err);
       setError(err.message);
@@ -45,15 +51,14 @@ export const CategoryProvider = ({ children }) => {
 
   const deleteCategory = async (id) => {
     const response = await categoryService.deleteCategory(id);
-    await fetchCategories();
+    await fetchCategories(true);
     return response;
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+
 
   const value = {
+    isInitialized,
     categories,
     loading,
     error,

@@ -7,11 +7,15 @@ import ConfirmModal from '../components/common/ConfirmModal';
 import { SpinnerIcon } from '../assets/icons';
 
 const Categories = () => {
-  const { categories, loading, createCategory, updateCategory, deleteCategory } = useCategories();
+  const { categories, loading, fetchCategories, createCategory, updateCategory, deleteCategory } = useCategories();
   const [modalLoading, setModalLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, id: null });
+
+  useEffect(() => {
+    fetchCategories(); 
+  }, []);
 
   const handleCreate = () => {
     setEditingCategory(null);

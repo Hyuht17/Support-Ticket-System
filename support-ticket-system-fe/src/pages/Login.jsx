@@ -46,7 +46,7 @@ const Login = () => {
     try {
       await login(formData);
       toast.success('Login successful!');
-      navigate('/dashboard');
+      navigate('/tickets'); // Navigate to tickets instead of dashboard
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');
     } finally {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTicket } from '../contexts/TicketContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -12,8 +12,13 @@ const CreateTicket = () => {
   const navigate = useNavigate();
   const { createTicket, loading } = useTicket();
   const { user } = useAuth();
-  const { categories } = useCategories();
-  const { labels } = useLabels();
+  const { categories, fetchCategories } = useCategories();
+  const { labels, fetchLabels } = useLabels();
+
+  useEffect(() => {
+    fetchCategories(); 
+    fetchLabels(); 
+  }, []);
 
   const [formData, setFormData] = useState({
     title: '',

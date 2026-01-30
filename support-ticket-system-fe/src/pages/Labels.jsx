@@ -7,11 +7,15 @@ import ConfirmModal from '../components/common/ConfirmModal';
 import { SpinnerIcon } from '../assets/icons';
 
 const Labels = () => {
-  const { labels, loading, createLabel, updateLabel, deleteLabel } = useLabels();
+  const { labels, loading, fetchLabels, createLabel, updateLabel, deleteLabel } = useLabels();
   const [modalLoading, setModalLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingLabel, setEditingLabel] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, id: null });
+
+  useEffect(() => {
+    fetchLabels();
+  }, []);
 
   const handleCreate = () => {
     setEditingLabel(null);

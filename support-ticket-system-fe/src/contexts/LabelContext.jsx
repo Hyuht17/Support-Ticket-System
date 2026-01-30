@@ -15,13 +15,19 @@ export const LabelProvider = ({ children }) => {
   const [labels, setLabels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const fetchLabels = async () => {
+  const fetchLabels = async (force = false) => {
+    if (isInitialized && !force) {
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const response = await labelService.getLabels();
       setLabels(response.data || []);
+      setIsInitialized(true);
     } catch (err) {
       console.error('Failed to fetch labels:', err);
       setError(err.message);
@@ -45,15 +51,14 @@ export const LabelProvider = ({ children }) => {
 
   const deleteLabel = async (id) => {
     const response = await labelService.deleteLabel(id);
-    await fetchLabels();
+    await fetchLabels(true);
     return response;
   };
 
-  useEffect(() => {
-    fetchLabels();
-  }, []);
+
 
   const value = {
+    isInitialized,
     labels,
     loading,
     error,
