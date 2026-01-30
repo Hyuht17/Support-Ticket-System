@@ -42,9 +42,9 @@ Route::middleware('auth:api')->prefix('users')->group(function () {
     Route::patch('{id}', [UserController::class, 'update']);
     Route::middleware('role:admin')->group(function () {
         Route::get('/', [UserController::class, 'index']);
+        Route::get('agents', [UserController::class, 'getAgents']); 
         Route::get('{id}', [UserController::class, 'show']);
-        Route::put('{id}/password', [UserPasswordController::class, 'update']);            Route::get('/agents', [UserController::class, 'getAgents']);
-        Route::get('/agents', [UserController::class, 'getAgents']);
+        Route::put('{id}/password', [UserPasswordController::class, 'update']);
     });
 });
 
